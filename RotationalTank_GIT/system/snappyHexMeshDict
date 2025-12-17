@@ -1,0 +1,276 @@
+
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+z_wet -0.05;
+z_dry 0.1;
+
+castellatedMesh on;
+snap            on;
+addLayers       off;
+
+geometry
+{
+   Body.stl
+    {
+        type closedTriSurfaceMesh;
+        name movingWalls;
+    }
+
+
+waterline_tank  // User defined region name
+    {
+        type   searchableCylinder;       // region defined by bounding box
+        point1          (0 0 -0.35); // Axis point at the start
+        point2          (0 0 0.1); //Axis point at the end
+        radius          0.21;
+    }
+// waterline_up  // User defined region name
+//     {
+//         type   searchableCylinder;       // region defined by bounding box
+//         point1          (0 0 0.07); // Axis point at the start
+//         point2          (0 0 0.45); //Axis point at the end
+//         radius          0.55;
+//     }
+
+//     waterline_below // User defined region name
+//     {
+//         type   searchableCylinder;       // region defined by bounding box
+//         point1          (0 0 -0.45); // Axis point at the start
+//         point2          (0 0 0.07); //Axis point at the end
+//         radius          0.55;
+//     }
+// waterline_tank_2  // User defined region name
+//     {
+//         type   searchableCylinder;       // region defined by bounding box
+//         point1          (0 0 -0.04); // Axis point at the start
+//         point2          (0 0 0.04); //Axis point at the end
+//         inner radius     0.45;
+//         radius          0.55;
+//     }
+// tank_box  // User defined region name
+//     {
+//         type   searchableCylinder;  
+//         point1          (0 0 -0.45); // Axis point at the start
+//         point2          (0 0 0.15); //Axis point at the end
+//         radius          0.45;
+//     }
+//     tank_box_2  // User defined region name
+//     {
+//         type   searchableCylinder;  
+//         point1          (0 0 -0.45); // Axis point at the start
+//         point2          (0 0 0.15); //Axis point at the end
+//         radius          0.2;
+//     }
+// tank_box_2  // User defined region name
+//     {
+//         type   searchableBox;  
+//     	min    (-0.27 -0.27 -0.04);
+//         max    ( 0.27 0.27 0.64);
+//     }
+// floating_box  // User defined region name
+// {
+//         type   searchableBox;  
+//     	min    (-0.05 -0.05 0);
+//         max    ( 0.05 0.05 0.35);
+// }
+
+
+floating_box  // User defined region name
+{
+        type   searchableBox;
+        min    (-0.05 -0.05 -0.4);
+        max    ( 0.05 0.05 0.1);
+}
+
+
+     floatingObject
+    {
+        type            searchableCylinder;
+        point1          (0 0 -0.15); // Axis point at the start
+        point2          (0 0 0.025); //Axis point at the end
+        radius          0.01;
+    }  
+
+}
+
+castellatedMeshControls
+{
+    maxLocalCells 1000000; // max number of cells per processor during refinement
+    maxGlobalCells 2000000; // overall cell limit during refinement, before removal
+    minRefinementCells 0; // cells to be refined must be greater than this value
+    nCellsBetweenLevels
+ 3; // number of buffer layers of cells between successive levels of refinement, typically 3
+    locationInMesh (0 0.25 0.1); //location vector outside the region to be meshed. Use weird numbers to avoid falling just at an edge.
+//locating it inside causes problems
+    resolveFeatureAngle 20;
+    features
+    (
+    );
+
+    refinementSurfaces
+    {
+        movingWalls
+        {
+            level (3 3);
+            patchInfo { type wall; }
+        }
+        floatingObject
+        {
+            level (3 3);
+            patchInfo { type wall; }
+        }
+    }
+
+    refinementRegions
+    {
+//         movingWalls
+//         {
+//             mode inside;
+//             levels ((1E15 1));
+//         }
+
+
+ floating_box
+        {
+            mode inside;
+            levels ((1.0 3));         // refinement level 4 (1.0 entry ignored)
+        }
+waterline_tank
+        {
+            mode inside;
+            levels ((1.0 3));         // refinement level 4 (1.0 entry ignored)
+        }
+
+// tank_box
+//         {
+//             mode inside;
+//             levels ((1.0 2));         // refinement level 4 (1.0 entry ignored)
+//         }
+// tank_box_2
+//         {
+//             mode inside;
+//             levels ((1.0 2));         // refinement level 4 (1.0 entry ignored)
+//         }
+//floating_box
+        //{
+            //mode inside;
+           // levels ((1.0 3));         // refinement level 4 (1.0 entry ignored)
+        //}
+//floating_cylinder
+        //{
+            //mode inside;
+            //levels ((1.0 4));         // refinement level 4 (1.0 entry ignored)
+        //}
+
+
+    }
+allowFreeStandingZoneFaces  false;
+
+    // Optional: switch off topological test for cells to-be-squashed
+    //           and use geometric test instead
+useTopologicalSnapDetection false;
+}
+
+snapControls
+{
+nSmoothPatch 3; //Number of patch smoothing iterations before finding correspondence to surface
+tolerance 2.0;
+nSolveIter 30;// Number of mesh dSisplacement relaxation. The higher the value the better the body fitted mesh. Default is 30. Increase to 300 for better mesh quality, but increased time.
+nRelaxIter 5; //Maximum number of snapping relaxation iterations. Increase this value to improve the quality of the body fitted mesh.
+nFeatureSnapIter 10; // 10; //Number of feature edge snapping iterations. Increase this value to improve the quality of the edge features.
+
+implicitFeatureSnap true; // Turn to true when the body you want to snap is a geometric entity (sphere, cylinder, etc), not a file stl
+explicitFeatureSnap false; // If true, will use the file defined in castellatedMeshControls::features
+multiRegionFeatureSnap false;
+}
+
+addLayersControls
+{
+ relativeSizes false; // if true, BL meshing is done relative to the size of the cells next to the surface. It is quite difficult to set a desired thickness of the first layer.
+  // When the option relativeSizes is true and in order to have a uniform boundary layer, we need to have a uniform surface refinement.
+  layers
+  {
+       floatingObject
+      {
+          nSurfaceLayers    4;
+      }
+  }
+
+  expansionRatio 1.2;
+  finalLayerThickness 0.65;
+  minThickness 0.25;
+  nGrow 0;
+  featureAngle 150;  // Increase this value to avoid BL collapsing
+  nRelaxIter 5;
+  nSmoothSurfaceNormals 1;
+  nSmoothNormals 3;
+  nSmoothThickness 10;
+  maxFaceThicknessRatio 0.5;
+  maxThicknessToMedialRatio 0.3;
+  minMedialAxisAngle 90;
+  nBufferCellsNoExtrude 0;
+  nLayerIter 50;
+  nRelaxedIter 20;
+}
+meshQualityControls
+{
+    // Default mesh quality dict
+    //maxNonOrtho 65;
+    //maxBoundarySkewness 20;
+    //maxInternalSkewness 4;
+    maxConcave 85;
+    // Minimum cell pyramid volume; case dependent
+    //minVol 1e-13;
+    //  1e-15 (small positive) to enable tracking
+    // -1e+30 (large negative) for best layer insertion
+    //minTetQuality 1e-15;
+    // if >0 : preserve single cells with all points on the surface if the
+    // resulting volume after snapping (by approximation) is larger than
+    // minVolCollapseRatio times old volume (i.e. not collapsed to flat cell).
+    //  If <0 : delete always.
+    //minVolCollapseRatio 0.5;
+    minArea          -1;
+    //minTwist          0.02;
+    //minDeterminant    0.001;
+    //minFaceWeight     0.05;
+    //minVolRatio       0.01;
+    minTriangleTwist -1;
+    nSmoothScale   10;
+    errorReduction 0.95;
+    relaxed
+    {
+        maxNonOrtho   78;
+    }
+
+    maxNonOrtho 75;
+    minFaceWeight 0.00005;
+    minDeterminant    0.0000001;
+    minVolRatio       0.00001;
+    // Set to very negative number (e.g. -1E30) to disable and get best layer adding
+    minTetQuality -1e+20;
+    minVol 1e-14;
+    minTwist          0.00001;
+    maxBoundarySkewness 30;
+    maxInternalSkewness 6;
+}
+writeFlags
+(
+);
+
+mergeTolerance 1e-6;
+
+
+// ************************************************************************* //

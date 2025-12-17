@@ -1,0 +1,35 @@
+#!/bin/bash
+NCores=22
+
+CYAN=$(tput setaf 1)
+RESET=$(tput sgr0)
+
+rm -rf 0/constant/polyMesh
+rm -rf 0/constant/uniform
+rm -rf constant/polyMesh
+
+if [ ! -d Logs ]; then
+    echo "Logs Created"
+    mkdir Logs
+fi
+
+Lgs="Log"
+echo "BlockMesh running in $runPath"
+blockMesh > Logs/log.BlockMesh 2>&1
+
+rm -rf processor*
+echo "Decomposing for meshing in $runPath"
+decomposePar > Logs/log.DecomposeParMeshing 2>&1
+
+echo "Running snappyHexMesh in parallel in $runPath"
+mpirun -np "$NCores" snappyHexMesh -overwrite -parallel |tee Logs/log.snappyHexMesh 2>&1
+
+echo "Running reconstructParMesh in $runPath"
+reconstructParMesh -constant > Logs/log.recontruct 2>&1
+echo "Runned Mesh"
+cp -r 0 0.sv
+echo "Running Toposet"
+topoSet
+echo "Running the refineMeshOverwrite"
+refineMesh -overwrite
+

@@ -1,0 +1,256 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "../../myVars"
+libs
+(
+    "libmrigidBodyDynamics.so"
+    "libmrigidBodyMeshMotion.so" 
+
+);
+application     interFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         5;
+
+deltaT          0.0001;
+
+writeControl    adjustable;
+writeInterval   0.1;
+//writeControl    timeStep;
+//writeInterval   1;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+maxCo         1;
+
+maxAlphaCo     	1;
+
+maxDeltaT       1e-2;
+
+
+functions 
+{
+
+
+
+    fieldMinMax1
+    {
+        // Mandatory entries (unmodifiable)
+        type        fieldMinMax;
+        libs        (fieldFunctionObjects);
+
+        // Mandatory entries (runtime modifiable)
+        mode        magnitude;
+        fields      (U);
+
+        // Optional entries (runtime modifiable)
+        location    true;
+
+        // Optional (inherited) entries
+        writePrecision  8;
+        writeToFile     true;
+        useUserTime     true;
+        region          region0;
+        enabled         true;
+        log             true;
+        timeStart       0;
+        timeEnd         1000;
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    timeStep;
+        writeInterval   1;
+    }
+
+
+    forces1
+    {
+        // Mandatory entries
+        type            forces;
+        libs            ("libforces.so");
+        patches         (floatingObject);
+
+
+        // Optional entries
+
+        // Field names
+        p               p;
+        U               U;
+        rho             rho;
+
+        // Reference pressure [Pa]
+        pRef            0;
+
+        // Include porosity effects?
+        porosity        no;
+
+        // Store and write volume field representations of forces and moments
+        writeFields     no;
+
+        // Centre of rotation for moment calculations
+        CofR            (0 0 0);
+
+        // Spatial data binning
+        // - extents given by the bounds of the input geometry
+        binData
+        {
+            nBin        20;
+            direction   (1 0 0);
+            cumulative  yes;
+        }
+    }
+
+
+
+
+    pressurePoint
+    {
+        type            probes;
+        libs            ( "libsampling.so" );
+
+        // Name of the directory for probe data
+        name            pressureProbes;
+
+        // Patches to sample (wildcards allowe 
+        // Write at same frequency as fields
+        //writeControl    runTime;
+        //writeInterval   2e-6;
+    writeControl    runTime;
+    writeInterval   1e-2;
+       
+ //region          region1;
+
+        // Fields to be probed
+        fields          (p_rgh p);
+
+        fixedLocations  false;
+
+        // Locations to probe. These get snapped onto the nearest point
+        // on the selected patches
+        probeLocations
+        (
+
+                        (0 0 -0.1)
+                        (0 0.1 -0.1)
+                        (0 0.2 -0.1)
+                        (0.1 0.1 -0.1)
+                        (0 0 -0.1)
+                        (0.1 0 -0.1)
+                        (0.2 0 -0.1)
+                         (0 0.385 -0.1)
+
+
+        );
+
+    }
+
+    gaugesVOF
+    {
+        type    sets;
+        libs    (sampling);
+
+        writeControl runTime;
+        writeInterval 1e-3;
+
+        setFormat           csv;
+    // setFormat       raw;
+            surfaceFormat   raw;
+            interpolationScheme cell;    
+
+
+        fields ( alpha.water );
+
+        sets
+        {
+            gauge_1
+            {
+                type    midPointAndFace;
+                axis    xyz;
+                start   (0 0.15 -0.125);
+                end     (0 0.15 0.125);
+             nPoints 400;
+            }
+
+            gauge_2
+            {
+                type    midPointAndFace;
+                axis    xyz;
+                start   (0 0.1 -0.125);
+                end     (0 0.1 0.125);
+	nPoints 400;            
+}
+            gauge_3
+            {
+                type    midPointAndFace;
+                axis    xyz;
+                start   (0.15 0 -0.125);
+                end     (0.15 0 0.125);
+            nPoints 400;
+            }
+                    gauge_4
+            {
+                type    midPointAndFace;
+                axis    xyz;
+                start   (0 0.125 -0.125);
+                end     (0 0.125 0.125);
+            nPoints 400;
+            }
+
+                        gauge_5
+            {
+                type    midPointAndFace;
+                axis    xyz;
+                start   (0.125 0 -0.125);
+                end     (0.125 0 0.125);
+             nPoints 400;
+            }
+            
+             gauge_6
+            {
+                type    midPointAndFace;
+                axis    xyz;
+                start   (0.1 0 -0.125);
+                end     (0.1 0 0.125);
+             nPoints 400;
+            }
+
+        }
+    
+
+}
+}
+
+
+
+// ************************************************************************* //

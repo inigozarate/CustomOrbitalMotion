@@ -1,0 +1,90 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      dynamicMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dynamicFvMesh       dynamicMotionSolverFvMesh;
+libs
+(
+    "libmrigidBodyDynamics.so"
+    "libmrigidBodyMeshMotion.so" 
+
+);
+
+        motionSolverLibs    (libmrigidBodyMeshMotion);
+        motionSolver        mrigidBodyMotion;
+
+        report              on;
+        solver
+        {
+            type mNewmark;
+        }
+        accelerationRelaxation 1;
+        accelerationDamping    1;
+        nIter   12;
+	    amplitude   0.02;
+        omega       6.28;
+        m           1000000;
+	report on;
+        mbodies
+        {
+            movingWalls
+            {
+                type            mrigidBody;
+                parent          root;
+                mass            10;
+                centreOfMass     (0 0 0.24);
+                inertia         (564 0 0 8535 0 8535);
+                transform       (1 0 0 0 1 0 0 0 1)  (0 0 0);
+                mjoint
+                {
+                    type            mcomposite;
+
+                    mjoints
+                    (
+                        {
+                            type mPxyz;
+                        }
+
+                         {
+                            type mRy;
+                        }
+                    );
+                }
+                patches         (movingWalls);
+                innerDistance   0.025;
+                outerDistance   0.135;
+            }
+
+         
+        }
+     
+
+restraints
+{
+    orbitalMotion1
+    {
+        mtype        mOrbitalMotion;
+        mbody        movingWalls;
+
+        amplitude   0.02;
+        omega       6.28;
+        m           10;
+        g           9.81;
+    }
+}
+   
+
+
+// ************************************************************************* //

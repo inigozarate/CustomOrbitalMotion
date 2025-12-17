@@ -1,0 +1,26 @@
+#bin/bash
+NCores=10
+runPath=$(pwd)
+cp -r 0.orig 0
+rm -rf 0/alpha.water
+cp -r 0/alpha.water.org 0/alpha.water
+
+echo "Running setFields in $runPath"
+setFields > Logs/log.setFields 2>&1
+
+rm -rf processor*
+echo "Decomposing before solver in $runPath"
+decomposePar > Logs/log.decomposePar 2>&1
+
+rm -rf postProcessing
+
+echo "CheckMeshing before run in $runPath"
+checkMesh > Logs/log.CheckMesh 2>&1
+grep -r cells: Logs/log.CheckMesh | awk '{print $2}' > CellNumber
+
+echo "${CYAN}Running solver with $NCores cores in $runPath${RESET}"|tee Logs/RunTimeStatus
+mpirun -np "$NCores" interFoam -parallel > Logs/log.solver 2>&1
+echo "Finished in $runPath" > Logs/RunTimeStatus 2>&1
+
+
+echo "$(tput setaf 3)Finished in $runPath$(tput sgr0)"

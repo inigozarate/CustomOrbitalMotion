@@ -1,0 +1,51 @@
+#!/bin/bash
+file=log.solver
+## CREATE HEADER, WRITE IT ON 'RB_DATA.dat'
+rm -r plot
+folder="turbulence_wl"
+	awk '/Time = / {print}' log.solver > time3.txt
+	grep -v "ExecutionTime =" time3.txt > tmpfile && mv tmpfile time3.txt
+	awk '{print $3;}' time3.txt > times.txt
+	rm time3.txt 
+	awk '/ClockTime =/ {print}' Logs/log.solver|awk '{print $3;}'> clock.txt
+	awk '/deltaT =/ {print}' log.solver|awk '{print $3;}'> deltat.txt	
+	awk '/Centre of mass:/ {print}' log.solver | awk '{print $6;}' | tr ')' ' ' > COG_z.txt
+	awk '{print $NF}' force.txt>forcel.txt
+	awk '{print $1;}' postProcessing/probes/0/p|tr -d "#" > tpressure.txt
+	awk '{print $2;}' postProcessing/probes/0/p|tr -d "Probe" | tr -d "Time"> pressure.txt
+	mkdir $folder
+	paste times.txt COG_z.txt | column -s $'\t' -t > CoGt.dat
+	# Set the file names
+	input_file=" force.txt"
+	output_file="forcesg.txt"
+	cp -r constant/dynamicMeshDict dynamicmesh.txt 
+	awk '/accelerationRelaxation/ {print}' dynamicmesh.txt> acrelaxation.txt
+	awk '/accelerationDamping/ {print}' dynamicmesh.txt>acDamping.txt
+	cp -r system/controlDict controldict.txt
+	awk '/maxCo/ {print}' controldict.txt>courant.txt
+	awk '/accelerationRelaxation/ {print}' dynamicmesh.txt> acrelaxation.txt
+	cp -r clock.txt $folder/clock.txt
+    	cp -r deltat.txt $folder/deltat.txt
+	cp -r CoGt.dat $folder/CoGt.dat
+	cp -r times.txt $folder/timescorr.txt
+	cp -r COG_z.txt $folder/COG_zcorr.txt	
+	cp -r forcel.txt $folder/forcel.txt
+	cp -r angvelx.txt $folder/angvelx.txt
+	cp -r angvely.txt $folder/angvely.txt
+	cp -r angvelz.txt $folder/angvelz.txt
+	cp -r linvelx.txt $folder/linvelx.txt
+	cp -r linvely.txt $folder/linvely.txt
+	cp -r linvelz.txt $folder/linvelz.txt
+	cp -r tpressure.txt $folder/tpressure.txt
+	cp -r pressure.txt $folder/pressure.txt
+	cp -r acrelaxation.txt $folder/acrelaxation.txt  
+	cp -r acDamping.txt  $folder/acDamping.txt
+	cp -r courant.txt  $folder/courant.txt
+	cp -r orientation.txt $folder/orientation.txt
+	cp -r ./$folder /mnt/d/Usuarios/877575/Desktop/plot_Upsala_freedecay
+
+
+
+
+awk '/Total/ && /:/ && f++==0 { gsub("[():]", ""); print $3, $4, $5 }' log.solver | awk '/Total/ { gsub(/[():]/,""); print $2, $3, $4 }' log.solver>F_Moments.txt
+awk '(NR-1)%6 == 0' F_Moments.txt> F_txt

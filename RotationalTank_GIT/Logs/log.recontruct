@@ -1,0 +1,244 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _e651d635-20240208 OPENFOAM=2312 patch=240220 version=2312
+Arch   : "LSB;label=32;scalar=64"
+Exec   : reconstructParMesh -constant
+Date   : Dec 17 2025
+Time   : 14:35:13
+Host   : U038472
+PID    : 3429108
+I/O    : uncollated
+Case   : /home/docencia/RotationalTankMain/RotationalTank_C1
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Merge individual processor meshes back into one master mesh.
+Use if the original master mesh has been deleted or the processor meshes
+have been modified (topology change).
+This tool will write the resulting mesh to a new time step and construct
+xxxxProcAddressing files in the processor meshes so reconstructPar can be
+used to regenerate the fields on the master mesh.
+
+Not well tested & use at your own risk!
+
+Merge assuming correct, fully matched procBoundaries.
+
+Found 22 processor directories
+    Reading database "RotationalTank_C1/processor0"
+    Reading database "RotationalTank_C1/processor1"
+    Reading database "RotationalTank_C1/processor2"
+    Reading database "RotationalTank_C1/processor3"
+    Reading database "RotationalTank_C1/processor4"
+    Reading database "RotationalTank_C1/processor5"
+    Reading database "RotationalTank_C1/processor6"
+    Reading database "RotationalTank_C1/processor7"
+    Reading database "RotationalTank_C1/processor8"
+    Reading database "RotationalTank_C1/processor9"
+    Reading database "RotationalTank_C1/processor10"
+    Reading database "RotationalTank_C1/processor11"
+    Reading database "RotationalTank_C1/processor12"
+    Reading database "RotationalTank_C1/processor13"
+    Reading database "RotationalTank_C1/processor14"
+    Reading database "RotationalTank_C1/processor15"
+    Reading database "RotationalTank_C1/processor16"
+    Reading database "RotationalTank_C1/processor17"
+    Reading database "RotationalTank_C1/processor18"
+    Reading database "RotationalTank_C1/processor19"
+    Reading database "RotationalTank_C1/processor20"
+    Reading database "RotationalTank_C1/processor21"
+
+Time = constant
+
+
+Writing merged mesh to "constant/polyMesh"
+
+Reconstructing addressing from processor meshes to the newly reconstructed mesh
+
+Processor 0
+Read processor mesh: "RotationalTank_C1/processor0"
+Writing addressing : "RotationalTank_C1/processor0/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 1
+Read processor mesh: "RotationalTank_C1/processor1"
+Writing addressing : "RotationalTank_C1/processor1/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 2
+Read processor mesh: "RotationalTank_C1/processor2"
+Writing addressing : "RotationalTank_C1/processor2/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 3
+Read processor mesh: "RotationalTank_C1/processor3"
+Writing addressing : "RotationalTank_C1/processor3/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 4
+Read processor mesh: "RotationalTank_C1/processor4"
+Writing addressing : "RotationalTank_C1/processor4/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 5
+Read processor mesh: "RotationalTank_C1/processor5"
+Writing addressing : "RotationalTank_C1/processor5/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 6
+Read processor mesh: "RotationalTank_C1/processor6"
+Writing addressing : "RotationalTank_C1/processor6/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 7
+Read processor mesh: "RotationalTank_C1/processor7"
+Writing addressing : "RotationalTank_C1/processor7/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 8
+Read processor mesh: "RotationalTank_C1/processor8"
+Writing addressing : "RotationalTank_C1/processor8/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 9
+Read processor mesh: "RotationalTank_C1/processor9"
+Writing addressing : "RotationalTank_C1/processor9/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 10
+Read processor mesh: "RotationalTank_C1/processor10"
+Writing addressing : "RotationalTank_C1/processor10/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 11
+Read processor mesh: "RotationalTank_C1/processor11"
+Writing addressing : "RotationalTank_C1/processor11/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 12
+Read processor mesh: "RotationalTank_C1/processor12"
+Writing addressing : "RotationalTank_C1/processor12/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 13
+Read processor mesh: "RotationalTank_C1/processor13"
+Writing addressing : "RotationalTank_C1/processor13/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 14
+Read processor mesh: "RotationalTank_C1/processor14"
+Writing addressing : "RotationalTank_C1/processor14/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 15
+Read processor mesh: "RotationalTank_C1/processor15"
+Writing addressing : "RotationalTank_C1/processor15/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 16
+Read processor mesh: "RotationalTank_C1/processor16"
+Writing addressing : "RotationalTank_C1/processor16/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 17
+Read processor mesh: "RotationalTank_C1/processor17"
+Writing addressing : "RotationalTank_C1/processor17/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 18
+Read processor mesh: "RotationalTank_C1/processor18"
+Writing addressing : "RotationalTank_C1/processor18/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 19
+Read processor mesh: "RotationalTank_C1/processor19"
+Writing addressing : "RotationalTank_C1/processor19/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 20
+Read processor mesh: "RotationalTank_C1/processor20"
+Writing addressing : "RotationalTank_C1/processor20/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+Processor 21
+Read processor mesh: "RotationalTank_C1/processor21"
+Writing addressing : "RotationalTank_C1/processor21/constant/polyMesh"
+    pointProcAddressing
+    faceProcAddressing
+    cellProcAddressing
+    boundaryProcAddressing
+
+End
+

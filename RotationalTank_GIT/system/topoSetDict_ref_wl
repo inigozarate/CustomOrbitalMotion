@@ -1,0 +1,135 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+
+
+    
+    {
+    // Mandatory (inherited) entries
+    name        waterline;
+    type        cellSet;
+    action      new;
+
+    // Mandatory entries
+     source      cylinderToCell;
+    // Option-2
+    p1          (0 0 -0.06);
+    p2          (0 0 0.06);
+    radius      0.45;
+    }
+
+);
+    // {
+    //     name    c1;
+    //     type    cellSet;
+    //     action  subtract;
+    //     source  cellToCell;
+
+    //     set     c2;
+    // }
+
+//  {
+//         name    c1_option2;
+//         type    cellSet;
+//         action  new;
+//         source  cellToCell;
+//         set     c0;
+//     }
+
+// {
+//         name    c1_option2;
+//         type    cellSet;
+//         action  invert;
+//     }
+
+
+
+//  {
+//         name    c0;
+//         type    cellSet;
+//         action  new;
+//         source  cellToCell;
+
+//         set     c1;
+//     }
+//     //This is both the wavebox and the mesh inside 
+//      {
+//         name    c1;
+//         type    cellSet;
+//         action  invert;
+//         source  cellToCell;
+//     }
+//      {
+//         name    c2;
+//         type    cellSet;
+//         action  new;
+//         source  regionsToCell;
+//         insidePoints ((0 0 0.35));
+//     }
+
+    // //Inverting the cellset for obtaining the backgroundMesh
+    // {
+    //     name    c1;
+    //     type    cellSet;
+    //     action  invert;
+    // }
+
+
+
+
+
+//  {
+//         name    c0;
+//         type    cellSet;
+//         action  new;
+//         source  cellToCell;
+
+//         set     c1;
+//     }
+//     //Inverting the cellset for obtaining the backgroundMesh
+//     {
+//         name    c1;
+//         type    cellSet;
+//         action  invert;
+//     }
+//     //Obtaning the cells in the cylinder area
+//   {
+//         name    c2;
+//         type    cellSet;
+//         action  new;
+//         source  regionsToCell;
+
+//         set     c1;
+//         insidePoints ((0 0 0));
+//     }
+//     //Selecting the cells of c1
+//     {
+//         name    c1;
+//         type    cellSet;
+//         action  subtract;
+//         source  cellToCell;
+
+//         set     c2;
+//     }
+
+    
+
+
+
+
+// ************************************************************************* //

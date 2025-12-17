@@ -1,0 +1,12 @@
+# OpenFOAM build
+Make/linux64*
+*.o
+*.dep
+lnInclude/
+
+# Editor
+.vscode/
+*.swp
+
+# System
+.DS_Store
