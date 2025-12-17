@@ -1,0 +1,261 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | www.openfoam.com
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+    Copyright (C) 2016-2017 OpenFOAM Foundation
+    Copyright (C) 2021 OpenCFD Ltd.
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Class
+    Foam::RBD::mrigidBodyMotion
+
+Description
+    Six degree of freedom motion for a rigid body.
+
+    Angular momentum stored in body fixed reference frame.  Reference
+    orientation of the body (where Q = I) must align with the cartesian axes
+    such that the Inertia tensor is in principle component form.  Can add
+    mrestraints (e.g. a spring) and constraints (e.g. motion may only be on a
+    plane).
+
+    The time-integrator for the motion is run-time selectable with options for
+    symplectic (explicit), Crank-Nicolson and mNewmark schemes.
+
+SourceFiles
+    mrigidBodyMotionI.H
+    mrigidBodyMotion.C
+    mrigidBodyMotionIO.C
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef mrigidBodyMotion_H
+#define mrigidBodyMotion_H
+
+#include "mrigidBodyModel.H"
+#include "mrigidBodyModelState.H"
+#include "pointField.H"
+#include "Switch.H"
+#include "Function1.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
+// Forward declarations
+class Time;
+
+namespace RBD
+{
+
+// Forward declarations
+class mrigidBodySolver;
+
+/*---------------------------------------------------------------------------*\
+                      Class mrigidBodyMotion Declaration
+\*---------------------------------------------------------------------------*/
+
+class mrigidBodyMotion
+:
+    public mrigidBodyModel
+{
+    friend class mrigidBodySolver;
+
+    // Private data
+
+        //- Motion state data object
+        mrigidBodyModelState motionState_;
+
+        //- Motion state data object for previous time-step
+        mrigidBodyModelState motionState0_;
+
+        //- Initial transform for external forces to the mbodies reference frame
+        List<spatialTransform> X00_;
+
+        //- Acceleration relaxation coefficient
+        autoPtr<Function1<scalar>> aRelax_;
+
+        //- Acceleration damping coefficient (for steady-state simulations)
+        scalar aDamp_;
+        Switch report_;
+        autoPtr<mrigidBodySolver> solver_;
+        
+
+
+        //- Switch to turn reporting of motion data on and off
+
+        //- Motion solver
+
+
+
+    // Private Member Functions
+
+        //- Initialize the body-state
+        void initialize();
+
+        //- No copy construct
+        mrigidBodyMotion(const mrigidBodyMotion&) = delete;
+
+        //- No copy assignment
+        void operator=(const mrigidBodyMotion&) = delete;
+
+
+public:
+
+    // Constructors
+        scalar amplitude_;
+        scalar omega_;
+        scalar acc_x;
+        scalar acc_z;
+        //- Construct mnull
+        mrigidBodyMotion(const Time& time);
+
+        //- Construct from dictionary
+        mrigidBodyMotion
+        (
+            const Time& time,
+            const dictionary& dict
+        );
+
+        //- Construct from constant and state dictionaries
+        mrigidBodyMotion
+        (
+            const Time& time,
+            const dictionary& dict,
+            const dictionary& stateDict
+        );
+
+
+    //- Destructor
+    ~mrigidBodyMotion();
+
+
+    // Member Functions
+
+        // Access
+
+            //- Return the report Switch
+            inline bool report() const;
+
+            //- Return the motion state
+            inline const mrigidBodyModelState& state() const;
+
+            //- Return the motion state for modification
+            inline mrigidBodyModelState& state();
+
+            //- Return the initial transform to the global frame for the
+            //  given body
+            spatialTransform X00(const label bodyId) const;
+
+
+        // Edit
+
+            //- Store the motion state at the beginning of the time-step
+            inline void newTime();
+
+
+        // Update state
+
+            //- Calculate and optionally relax the mjoint acceleration qDdot from
+            //  the mjoint state q, velocity qDot, internal force tau (in the
+            //  mjoint frame) and external force fx (in the global frame)
+            void forwardDynamics
+            (
+                mrigidBodyModelState& state,
+                const scalarField& tau,
+                const Field<spatialVector>& fx
+
+            ) const;
+
+            //- Integrate velocities, orientation and position
+            //  for the given time and time-step
+            void solve
+            (
+                const scalar t,
+                const scalar deltaT,
+                const scalarField& tau,
+                const Field<spatialVector>& fx
+            );
+
+            //- Report the status of the motion of the given body
+            void status(const label bodyID) const;
+
+            //- Report linear velocity of the given body
+            const vector vCofR(const label bodyID) const;
+
+            //- Report CofR of the given body
+            const vector cCofR(const label bodyID) const;
+
+
+        // Transformations
+
+            //- Transform the given initial pointField of the specified body
+            //  to correspond to the current motion state
+            tmp<pointField> transformPoints
+            (
+                const label bodyID,
+                const pointField& initialPoints
+            ) const;
+
+            //- Transform the given initial pointField of the specified body
+            //  to correspond to the current motion state scaled using
+            //  'slerp' interpolation
+            tmp<pointField> transformPoints
+            (
+                const label bodyID,
+                const scalarField& weight,
+                const pointField& initialPoints
+            ) const;
+
+            //- Transform the given initial pointField of the specified body
+            //  to correspond to the current motion state scaled using
+            //  'slerp' interpolation
+            tmp<pointField> transformPoints
+            (
+                const labelList& bodyIDs,
+                const List<const scalarField*>& weights,
+                const pointField& initialPoints
+            ) const;
+
+
+        //- Write
+        void write(Ostream&) const;
+
+        //- Read coefficients dictionary and update system parameters,
+        //  constraints and mrestraints but not the current state
+        bool read(const dictionary& dict);
+};
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace RBD
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "mrigidBodyMotionI.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //

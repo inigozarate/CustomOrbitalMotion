@@ -1,0 +1,32 @@
+wmake libso (mrigidBodyDynamics)
+    ln: ./lnInclude
+Making dependencies: mNewmark.C
+Making dependencies: mrigidBodySolverNew.C
+Making dependencies: mrigidBodySolver.C
+Making dependencies: mrigidBodyMotionIO.C
+Making dependencies: mrigidBodyMotion.C
+Making dependencies: mrigidBodyModelState.C
+Making dependencies: mrigidBodyModel.C
+wmkdepend: could not open 'mmasslessBody.H' for source file 'mrigidBodyModel/mrigidBodyModel.C': No such file or directory
+wmkdepend: could not open 'mrigidBodyRestraintI.H' for source file 'mrigidBodyModel/mrigidBodyModel.C': No such file or directory
+Making dependencies: mOrbitalMotion.C
+wmkdepend: could not open 'mrigidBodyRestraintI.H' for source file 'mrestraints/mOrbitalMotion/mOrbitalMotion.C': No such file or directory
+Making dependencies: mexternalForce.C
+wmkdepend: could not open 'mrigidBodyRestraintI.H' for source file 'mrestraints/mexternalForce/mexternalForce.C': No such file or directory
+Making dependencies: mlinearDamper.C
+wmkdepend: could not open 'mrigidBodyRestraintI.H' for source file 'mrestraints/mlinearDamper/mlinearDamper.C': No such file or directory
+Making dependencies: mPxyz.C
+Making dependencies: mPz.C
+Making dependencies: mPy.C
+Making dependencies: mPx.C
+Making dependencies: mRxyz.C
+Making dependencies: mRy.C
+Making dependencies: mRx.C
+Making dependencies: mjoint.C
+Making dependencies: msubBody.C
+Making dependencies: mcompositeBody.C
+Making dependencies: mjointBody.C
+wmkdepend: could not open 'mmasslessBody.H' for source file 'mbodies/mjointBody/mjointBody.C': No such file or directory
+Making dependencies: mrigidBody.C
+g++ -std=c++14 -m64 -pthread -DOPENFOAM=2312 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -Wno-attributes -Wno-unknown-pragmas -O3  -DNoRepository -ftemplate-depth-100  -I/usr/lib/openfoam/openfoam2312/src/finiteVolume/mlnInclude -I/usr/lib/openfoam/openfoam2312/src/meshTools/mlnInclude -I/usr/lib/openfoam/openfoam2312/src/dynamicMesh/mlnInclude -I/home/inigo/OpenFOAM/inigo-v2312/custom_orbitalmotion/mrigidBodyDynamics/mlnInclude -I/usr/lib/openfoam/openfoam2312/src/OpenFOAM/mlnInclude -I/usr/lib/openfoam/openfoam2312/src/OSspecific/POSIX/mlnInclude -iquote. -IlnInclude -I/usr/lib/openfoam/openfoam2312/src/OpenFOAM/lnInclude -I/usr/lib/openfoam/openfoam2312/src/OSspecific/POSIX/lnInclude   -fPIC -c mbodies/mrigidBody/mrigidBody.C -o Make/linux64GccDPInt32Opt/mbodies/mrigidBody/mrigidBody.o
+make: *** No rule to make target 'Make/linux64GccDPInt32Opt/mbodies/mmasslessBody/mmasslessBody.C.dep', needed by 'Make/linux64GccDPInt32Opt/mbodies/mmasslessBody/mmasslessBody.o'.  Stop.

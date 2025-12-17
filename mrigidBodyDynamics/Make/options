@@ -1,0 +1,14 @@
+EXE_INC = \
+    -I$(LIB_SRC)/finiteVolume/mlnInclude \
+    -I$(LIB_SRC)/meshTools/mlnInclude \
+    -I$(LIB_SRC)/dynamicMesh/mlnInclude \
+    -I$(WM_PROJECT_USER_DIR)/custom_orbitalmotion/mrigidBodyDynamics/mlnInclude \
+    -I$(LIB_SRC)/OpenFOAM/mlnInclude \
+    -I$(LIB_SRC)/OSspecific/$(WM_OSTYPE)/mlnInclude
+
+LIB_LIBS = \
+    -lfiniteVolume \
+    -lmeshTools \
+    -ldynamicMesh \
+    -L$(FOAM_USER_LIBBIN) \
+    -lmrigidBodyDynamics

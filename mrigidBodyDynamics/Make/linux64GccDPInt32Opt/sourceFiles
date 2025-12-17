@@ -1,0 +1,34 @@
+SOURCE = \
+mbodies/mrigidBody/mrigidBody.C \
+mbodies/mjointBody/mjointBody.C \
+mbodies/mcompositeBody/mcompositeBody.C \
+mbodies/msubBody/msubBody.C \
+mbodies/mmasslessBody/mmasslessBody.C \
+mjoints/mjoint/mjoint.C \
+mjoints/mnull/mnullJoint.C \
+mjoints/mcomposite/mcompositeJoint.C \
+mjoints/mfloating/mfloatingJoint.C \
+mjoints/mRx/mRx.C \
+mjoints/mRy/mRy.C \
+mjoints/mRxyz/mRxyz.C \
+mjoints/mPx/mPx.C \
+mjoints/mPy/mPy.C \
+mjoints/mPz/mPz.C \
+mjoints/mPxyz/mPxyz.C \
+mrestraints/mrestraint/mrigidBodyRestraint.C \
+mrestraints/mrestraint/mrigidBodyRestraintNew.C \
+mrestraints/mlinearSpring/mlinearSpring.C \
+mrestraints/mlinearDamper/mlinearDamper.C \
+mrestraints/mexternalForce/mexternalForce.C \
+mrestraints/mOrbitalMotion/mOrbitalMotion.C \
+mrigidBodyModel/mrigidBodyModel.C \
+mrigidBodyModel/mforwardDynamics.C \
+mrigidBodyModelState/mrigidBodyModelState.C \
+mrigidBodyModelState/mrigidBodyModelStateIO.C \
+mrigidBodyMotion/mrigidBodyMotion.C \
+mrigidBodyMotion/mrigidBodyMotionIO.C \
+mrigidBodySolvers/mrigidBodySolver/mrigidBodySolver.C \
+mrigidBodySolvers/mrigidBodySolver/mrigidBodySolverNew.C \
+mrigidBodySolvers/mNewmark/mNewmark.C \
+
+# sources

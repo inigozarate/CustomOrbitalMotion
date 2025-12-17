@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "mjointBody.C": "cpp",
+        "mfloatingJoint.C": "cpp",
+        "mmasslessBody.C": "cpp",
+        "mrigidBodyMeshMotion.C": "cpp",
+        "mrigidBodyMeshMotionSolver.C": "cpp",
+        "mrigidBodyModel.C": "cpp",
+        "mrigidBodySolver.C": "cpp",
+        "mNewmark.C": "cpp",
+        "mOrbitalMotion.C": "cpp"
+    }
+}

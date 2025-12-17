@@ -1,0 +1,5 @@
+SOURCE = \
+mrigidBodyMeshMotion/mrigidBodyMeshMotion.C \
+mrigidBodyMeshMotionSolver/mrigidBodyMeshMotionSolver.C \
+
+# sources

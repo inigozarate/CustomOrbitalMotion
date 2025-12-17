@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "mrigidBodyModelState.C": "cpp",
+        "mrigidBodyModelStateIO.C": "cpp",
+        "mrigidBodyMotion.C": "cpp",
+        "mforwardDynamics.C": "cpp",
+        "mrigidBodyModel.C": "cpp",
+        "ClassA.C": "cpp",
+        "ClassB.C": "cpp"
+    }
+}
