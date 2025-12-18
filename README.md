@@ -123,3 +123,8 @@ forAll(state.qDdot(), i)
 }
 
 ```
+
+
+<img width="709" height="471" alt="MOTIONORBITAL png-1" src="https://github.com/user-attachments/assets/ca7d867d-97c2-487f-b6e7-cb079bb5777a" />
+
+
